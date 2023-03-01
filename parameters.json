@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaults_kvweuucbusrdprod01_name": {
+            "value": null
+        },
+        "servers_sql_weu_uc_busrd_prod_01_name": {
+            "value": null
+        },
+        "actionGroups_Bus_UCRD_Prod_Monitor_name": {
+            "value": null
+        },
+        "storageAccounts_sqlweuucbusrdprod01_name": {
+            "value": null
+        },
+        "storageAccounts_adlsweuucbusrdprod01_name": {
+            "value": null
+        },
+        "metricAlerts_BUS_UCRD_PROD01DB_Alert_name": {
+            "value": null
+        },
+        "workspaces_dbw_weu_uc_busrd_prod_01_name": {
+            "value": null
+        },
+        "actionGroups_busrd_Alert_Action_Group_name": {
+            "value": null
+        },
+        "activityLogAlerts_allResourceHealthAlert_name": {
+            "value": null
+        },
+        "virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name": {
+            "value": null
+        },
+        "dashboards_6d06ffb8_cc53_4507_906b_db2bbbaec110_name": {
+            "value": null
+        },
+        "networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name": {
+            "value": null
+        },
+        "metricAlerts_Alert_adlsweuucbusrdprod01_UsedCapacity_Exceed_name": {
+            "value": null
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_TriggerFailedRuns_name": {
+            "value": null
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_ActivityFailedRuns_name": {
+            "value": null
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_PipelineFailedRuns_name": {
+            "value": null
+        },
+        "actionRules_suppression_migration_weu_uc_busrd_prod_INC1270217_name": {
+            "value": null
+        },
+        "actionGroups_Platform_Alert_Action_Group_externalid": {
+            "value": null
+        },
+        "factories_adf_weu_uc_busrd_prod_01_externalid": {
+            "value": null
+        }
+    }
+}

@@ -1,0 +1,2339 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaults_kvweuucbusrdprod01_name": {
+            "defaultValue": "kvweuucbusrdprod01",
+            "type": "String"
+        },
+        "servers_sql_weu_uc_busrd_prod_01_name": {
+            "defaultValue": "sql-weu-uc-busrd-prod-01",
+            "type": "String"
+        },
+        "actionGroups_Bus_UCRD_Prod_Monitor_name": {
+            "defaultValue": "Bus-UCRD-Prod-Monitor",
+            "type": "String"
+        },
+        "storageAccounts_sqlweuucbusrdprod01_name": {
+            "defaultValue": "sqlweuucbusrdprod01",
+            "type": "String"
+        },
+        "storageAccounts_adlsweuucbusrdprod01_name": {
+            "defaultValue": "adlsweuucbusrdprod01",
+            "type": "String"
+        },
+        "metricAlerts_BUS_UCRD_PROD01DB_Alert_name": {
+            "defaultValue": "BUS_UCRD_PROD01DB_Alert",
+            "type": "String"
+        },
+        "workspaces_dbw_weu_uc_busrd_prod_01_name": {
+            "defaultValue": "dbw-weu-uc-busrd-prod-01",
+            "type": "String"
+        },
+        "actionGroups_busrd_Alert_Action_Group_name": {
+            "defaultValue": "busrd_Alert_Action_Group",
+            "type": "String"
+        },
+        "activityLogAlerts_allResourceHealthAlert_name": {
+            "defaultValue": "allResourceHealthAlert",
+            "type": "String"
+        },
+        "virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name": {
+            "defaultValue": "vnet-dbw-weu-uc-busrd-prod-01",
+            "type": "String"
+        },
+        "dashboards_6d06ffb8_cc53_4507_906b_db2bbbaec110_name": {
+            "defaultValue": "6d06ffb8-cc53-4507-906b-db2bbbaec110",
+            "type": "String"
+        },
+        "networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name": {
+            "defaultValue": "nsg-dbw-weu-uc-busrd-prod-01",
+            "type": "String"
+        },
+        "metricAlerts_Alert_adlsweuucbusrdprod01_UsedCapacity_Exceed_name": {
+            "defaultValue": "Alert_adlsweuucbusrdprod01_UsedCapacity_Exceed",
+            "type": "String"
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_TriggerFailedRuns_name": {
+            "defaultValue": "alertADF_adf-weu-uc-busrd-prod-01_TriggerFailedRuns",
+            "type": "String"
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_ActivityFailedRuns_name": {
+            "defaultValue": "alertADF_adf-weu-uc-busrd-prod-01_ActivityFailedRuns",
+            "type": "String"
+        },
+        "metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_PipelineFailedRuns_name": {
+            "defaultValue": "alertADF_adf-weu-uc-busrd-prod-01_PipelineFailedRuns",
+            "type": "String"
+        },
+        "actionRules_suppression_migration_weu_uc_busrd_prod_INC1270217_name": {
+            "defaultValue": "suppression-migration-weu-uc-busrd-prod-INC1270217",
+            "type": "String"
+        },
+        "actionGroups_Platform_Alert_Action_Group_externalid": {
+            "defaultValue": "/subscriptions/121a56bf-d14d-4521-8d30-f935f458bd48/resourceGroups/weu-hub-centprv1-prod/providers/microsoft.insights/actionGroups/Platform_Alert_Action_Group",
+            "type": "String"
+        },
+        "factories_adf_weu_uc_busrd_prod_01_externalid": {
+            "defaultValue": "/subscriptions/166c0d52-99c2-448f-8385-f6f0b26640e8/resourceGroups/weu-uc-busrd-prod/providers/Microsoft.DataFactory/factories/adf-weu-uc-busrd-prod-01",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.AlertsManagement/actionRules",
+            "apiVersion": "2021-08-08",
+            "name": "[parameters('actionRules_suppression_migration_weu_uc_busrd_prod_INC1270217_name')]",
+            "location": "Global",
+            "tags": {
+                "CostCenter": "7304070",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "Region": "weu"
+            },
+            "properties": {
+                "scopes": [
+                    "/subscriptions/166c0d52-99c2-448f-8385-f6f0b26640e8/resourceGroups/weu-uc-busrd-prod"
+                ],
+                "schedule": {
+                    "effectiveFrom": "2022-10-27T00:00:00",
+                    "effectiveUntil": "2022-11-02T00:00:00",
+                    "timeZone": "India Standard Time"
+                },
+                "enabled": false,
+                "actions": [
+                    {
+                        "actionType": "RemoveAllActionGroups"
+                    }
+                ],
+                "description": "suppressing alerts due to migration window"
+            }
+        },
+        {
+            "type": "Microsoft.Databricks/workspaces",
+            "apiVersion": "2023-02-01",
+            "name": "[parameters('workspaces_dbw_weu_uc_busrd_prod_01_name')]",
+            "location": "westeurope",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "dbw_busrd_prod_1_9372"
+            },
+            "sku": {
+                "name": "premium"
+            },
+            "properties": {
+                "managedResourceGroupId": "[concat('/subscriptions/166c0d52-99c2-448f-8385-f6f0b26640e8/resourceGroups/', parameters('workspaces_dbw_weu_uc_busrd_prod_01_name'))]",
+                "parameters": {
+                    "enableNoPublicIp": {
+                        "type": "Bool",
+                        "value": true
+                    },
+                    "natGatewayName": {
+                        "type": "String",
+                        "value": "nat-gateway"
+                    },
+                    "prepareEncryption": {
+                        "type": "Bool",
+                        "value": false
+                    },
+                    "publicIpName": {
+                        "type": "String",
+                        "value": "nat-gw-public-ip"
+                    },
+                    "requireInfrastructureEncryption": {
+                        "type": "Bool",
+                        "value": false
+                    },
+                    "storageAccountName": {
+                        "type": "String",
+                        "value": "dbstorage2do7mult72ofy"
+                    },
+                    "storageAccountSkuName": {
+                        "type": "String",
+                        "value": "Standard_GRS"
+                    },
+                    "vnetAddressPrefix": {
+                        "type": "String",
+                        "value": "10.139"
+                    }
+                },
+                "authorizations": [
+                    {
+                        "principalId": "9a74af6f-d153-4348-988a-e2672920bee9",
+                        "roleDefinitionId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+                    }
+                ],
+                "createdBy": {},
+                "updatedBy": {},
+                "createdDateTime": "2022-09-29T12:24:14.3961099Z"
+            }
+        },
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2022-06-01",
+            "name": "[parameters('actionGroups_busrd_Alert_Action_Group_name')]",
+            "location": "Global",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "actiongroup_busrd_prod_9372"
+            },
+            "properties": {
+                "groupShortName": "busrd",
+                "enabled": true,
+                "emailReceivers": [],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            }
+        },
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2022-06-01",
+            "name": "[parameters('actionGroups_Bus_UCRD_Prod_Monitor_name')]",
+            "location": "Global",
+            "tags": {
+                "CostCenter": "7304070",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "Region": "weu"
+            },
+            "properties": {
+                "groupShortName": "Bus-UCRDProd",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": " Bus-UCRD-PROD-MonitorEmail2_-EmailAction-",
+                        "emailAddress": "heiko.guessmann@daimler.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": " Bus-UCRD-PROD-MonitorEmail3_-EmailAction-",
+                        "emailAddress": "navinkumar.n@daimler.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": " Bus-UCRD-PROD-MonitorEmail4_-EmailAction-",
+                        "emailAddress": "sivakkumaran.lakshminarayanan@daimler.com",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": " Bus-UCRD-PROD-MonitorEmail5_-EmailAction-",
+                        "emailAddress": "conneqt.sekhar@daimler.com",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            }
+        },
+        {
+            "type": "microsoft.insights/activityLogAlerts",
+            "apiVersion": "2020-10-01",
+            "name": "[parameters('activityLogAlerts_allResourceHealthAlert_name')]",
+            "location": "Global",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "resHealth_busrd_prod_9372"
+            },
+            "properties": {
+                "scopes": [
+                    "/subscriptions/166c0d52-99c2-448f-8385-f6f0b26640e8"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "ResourceHealth"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.Sql/servers/databases"
+                                },
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.DataFactory/factories"
+                                },
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.Storage/storageAccounts"
+                                },
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.OperationalInsights/workspaces"
+                                },
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.KeyVault/vaults"
+                                },
+                                {
+                                    "field": "resourceType",
+                                    "equals": "Microsoft.DataLakeStore/accounts"
+                                }
+                            ]
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "resourceGroup",
+                                    "equals": "weu-uc-busrd-prod"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[parameters('actionGroups_Platform_Alert_Action_Group_externalid')]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_PipelineFailedRuns_name')]",
+            "location": "global",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "adf-weu-uc-busrd-prod-01-Alerts"
+            },
+            "properties": {
+                "severity": 1,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('factories_adf_weu_uc_busrd_prod_01_externalid')]"
+                ],
+                "evaluationFrequency": "PT5M",
+                "windowSize": "PT15M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 1,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.DataFactory/factories",
+                            "metricName": "PipelineFailedRuns",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Minimum",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.DataFactory/factories",
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_Platform_Alert_Action_Group_externalid')]"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2022-11-01",
+            "name": "[parameters('vaults_kvweuucbusrdprod01_name')]",
+            "location": "westeurope",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "kv_busrd_prod_1_9372"
+            },
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "premium"
+                },
+                "tenantId": "505cca53-5750-4134-9501-8d52d5df3cd1",
+                "accessPolicies": [],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": true,
+                "enabledForTemplateDeployment": true,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": true,
+                "enablePurgeProtection": true,
+                "vaultUri": "[concat('https://', parameters('vaults_kvweuucbusrdprod01_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Portal/dashboards",
+            "apiVersion": "2020-09-01-preview",
+            "name": "[parameters('dashboards_6d06ffb8_cc53_4507_906b_db2bbbaec110_name')]",
+            "location": "westeurope",
+            "tags": {
+                "hidden-title": "BUS UC RD PROD SQL DB01 Metrics",
+                "CostCenter": "7304070",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "Region": "weu"
+            },
+            "properties": {
+                "lenses": [
+                    {
+                        "order": 0,
+                        "parts": [
+                            {
+                                "position": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "rowSpan": 3,
+                                    "colSpan": 4
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            },
+                            {
+                                "position": {
+                                    "x": 4,
+                                    "y": 0,
+                                    "rowSpan": 3,
+                                    "colSpan": 4
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            },
+                            {
+                                "position": {
+                                    "x": 0,
+                                    "y": 3,
+                                    "rowSpan": 3,
+                                    "colSpan": 5
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            },
+                            {
+                                "position": {
+                                    "x": 5,
+                                    "y": 3,
+                                    "rowSpan": 3,
+                                    "colSpan": 5
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            },
+                            {
+                                "position": {
+                                    "x": 10,
+                                    "y": 3,
+                                    "rowSpan": 3,
+                                    "colSpan": 4
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "metadata": {
+                    "model": {}
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[parameters('servers_sql_weu_uc_busrd_prod_01_name')]",
+            "location": "westeurope",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DataClassification": "confidential",
+                "DataDomain": "Product_Engineering",
+                "BusinessUnit": "TE",
+                "DeploymentScript": "sql_busrd_prod_1_9372"
+            },
+            "kind": "v12.0",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "administratorLogin": "CloudSA0c01f77d",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "Group",
+                    "login": "099-Treasure WEU_UC_BUSRD_PROD-ADMINS",
+                    "sid": "04b894ca-c777-4984-81c1-3ec04c4dd6ba",
+                    "tenantId": "505cca53-5750-4134-9501-8d52d5df3cd1",
+                    "azureADOnlyAuthentication": true
+                },
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('storageAccounts_adlsweuucbusrdprod01_name')]",
+            "location": "westeurope",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DataClassification": "confidential",
+                "DataDomain": "Product_Engineering",
+                "BusinessUnit": "TE",
+                "DeploymentScript": "busrd_adlsweuucbusrdprod01"
+            },
+            "sku": {
+                "name": "Standard_ZRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "defaultToOAuthAuthentication": true,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": false,
+                "isHnsEnabled": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-09-01",
+            "name": "[parameters('storageAccounts_sqlweuucbusrdprod01_name')]",
+            "location": "westeurope",
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DataClassification": "confidential",
+                "DataDomain": "Product_Engineering",
+                "BusinessUnit": "TE",
+                "DeploymentScript": "sql_busrd_prod_1_9372"
+            },
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "allowedCopyScope": "AAD",
+                "defaultToOAuthAuthentication": true,
+                "allowCrossTenantReplication": false,
+                "isSftpEnabled": false,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": false,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_ActivityFailedRuns_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "adf-weu-uc-busrd-prod-01-Alerts"
+            },
+            "properties": {
+                "severity": 1,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('factories_adf_weu_uc_busrd_prod_01_externalid')]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 1,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.DataFactory/factories",
+                            "metricName": "ActivityFailedRuns",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Total",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.DataFactory/factories",
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_alertADF_adf_weu_uc_busrd_prod_01_TriggerFailedRuns_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "adf-weu-uc-busrd-prod-01-Alerts"
+            },
+            "properties": {
+                "severity": 1,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('factories_adf_weu_uc_busrd_prod_01_externalid')]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 1,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.DataFactory/factories",
+                            "metricName": "TriggerFailedRuns",
+                            "operator": "GreaterThanOrEqual",
+                            "timeAggregation": "Count",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.DataFactory/factories",
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2022-11-01",
+            "name": "[concat(parameters('vaults_kvweuucbusrdprod01_name'), '/DatabricksToken')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_kvweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for workers communication with Databricks Webapp.",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "443",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "AzureDatabricks",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for worker communication with Azure Eventhub services.",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "9093",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "EventHub",
+                "access": "Allow",
+                "priority": 104,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for workers communication with Azure SQL services.",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3306",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "Sql",
+                "access": "Allow",
+                "priority": 101,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for workers communication with Azure Storage services.",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "443",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "Storage",
+                "access": "Allow",
+                "priority": 102,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for worker nodes communication within a cluster.",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "VirtualNetwork",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), '/Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "description": "Required for worker nodes communication within a cluster.",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "VirtualNetwork",
+                "destinationAddressPrefix": "VirtualNetwork",
+                "access": "Allow",
+                "priority": 103,
+                "direction": "Outbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "099-Treasure WEU_UC_BUSRD_PROD-ADMINS",
+                "sid": "04b894ca-c777-4984-81c1-3ec04c4dd6ba",
+                "tenantId": "505cca53-5750-4134-9501-8d52d5df3cd1"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "isDevopsAuditEnabled": false,
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": true
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/default')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "connectionType": "Proxy"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DataClassification": "confidential",
+                "DataDomain": "Product_Engineering",
+                "BusinessUnit": "TE",
+                "DeploymentScript": "sql_busrd_prod_1_9372"
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 100
+            },
+            "kind": "v12.0,user",
+            "properties": {
+                "collation": "Latin1_General_100_CI_AS_SC",
+                "maxSizeBytes": 1099511627776,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "requestedBackupStorageRedundancy": "Zone",
+                "maintenanceConfigurationId": "/subscriptions/166c0d52-99c2-448f-8385-f6f0b26640e8/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "isDevopsAuditEnabled": false,
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/query-editor-1c6c22')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/query-editor-1f8347')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/query-editor-6b4dbc')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/query-editor-707786')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/ServiceManaged')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_ZRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_sqlweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_ZRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_sqlweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_sqlweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_sqlweuucbusrdprod01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "microsoft.insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_BUS_UCRD_PROD01DB_Alert_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Bus_UCRD_Prod_Monitor_name'))]"
+            ],
+            "tags": {
+                "CostCenter": "7304070",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "Region": "weu"
+            },
+            "properties": {
+                "description": "Alert on Bus UC RD Prod01 DB - DTU, CPU and data Space used",
+                "severity": 3,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]"
+                ],
+                "evaluationFrequency": "PT30M",
+                "windowSize": "PT30M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 90,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Sql/servers/databases",
+                            "metricName": "dtu_consumption_percent",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "criterionType": "StaticThresholdCriterion"
+                        },
+                        {
+                            "threshold": 90,
+                            "name": "Metric2",
+                            "metricNamespace": "Microsoft.Sql/servers/databases",
+                            "metricName": "cpu_percent",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "criterionType": "StaticThresholdCriterion"
+                        },
+                        {
+                            "threshold": 75,
+                            "name": "Metric3",
+                            "metricNamespace": "Microsoft.Sql/servers/databases",
+                            "metricName": "storage_percent",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Maximum",
+                            "criterionType": "StaticThresholdCriterion"
+                        },
+                        {
+                            "threshold": 90,
+                            "name": "Metric4",
+                            "metricNamespace": "Microsoft.Sql/servers/databases",
+                            "metricName": "log_write_percent",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.Sql/servers/databases",
+                "targetResourceRegion": "westeurope",
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Bus_UCRD_Prod_Monitor_name'))]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_Alert_adlsweuucbusrdprod01_UsedCapacity_Exceed_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]",
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DataClassification": "confidential",
+                "DataDomain": "Product_Engineering",
+                "BusinessUnit": "TE",
+                "DeploymentScript": "adlsweuucbusrdprod01-alertDeployment"
+            },
+            "properties": {
+                "severity": 2,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT1H",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 100,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Storage/storageAccounts",
+                            "metricName": "UsedCapacity",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.Storage/storageAccounts",
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_busrd_Alert_Action_Group_name'))]"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), '/snet-private')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.179.0.0/18",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+                },
+                "delegations": [
+                    {
+                        "name": "databricks-del-private",
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-private'), '/delegations/databricks-del-private')]",
+                        "properties": {
+                            "serviceName": "Microsoft.Databricks/workspaces"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                    }
+                ],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-07-01",
+            "name": "[concat(parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), '/snet-public')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.179.64.0/18",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+                },
+                "delegations": [
+                    {
+                        "name": "databricks-del-public",
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-public'), '/delegations/databricks-del-public')]",
+                        "properties": {
+                            "serviceName": "Microsoft.Databricks/workspaces"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                    }
+                ],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 24
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/sqldb-weu-uc-busrd-prod-01/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_sql_weu_uc_busrd_prod_01_name'), 'sqldb-weu-uc-busrd-prod-01')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2022-05-01-preview",
+            "name": "[concat(parameters('servers_sql_weu_uc_busrd_prod_01_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_sql_weu_uc_busrd_prod_01_name'))]",
+                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "storageContainerPath": "[concat('https://', parameters('storageAccounts_sqlweuucbusrdprod01_name'), '.blob.core.windows.net/vulnerability-assessment/')]",
+                "recurringScans": {
+                    "isEnabled": true,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/audit-error-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/awake')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/backupdashboard')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/data-access-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/domain-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/kit')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/landing-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/migration-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/pec')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/ptc-ca')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/reservoir')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/staging-zone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_adlsweuucbusrdprod01_name'), '/default/test')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_adlsweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_adlsweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-09-01",
+            "name": "[concat(parameters('storageAccounts_sqlweuucbusrdprod01_name'), '/default/vulnerability-assessment')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlweuucbusrdprod01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlweuucbusrdprod01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2022-07-01",
+            "name": "[parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-public')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-private')]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "dbw_busrd_prod_1_9372"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.179.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "snet-public",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-public')]",
+                        "properties": {
+                            "addressPrefix": "10.179.64.0/18",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+                            },
+                            "delegations": [
+                                {
+                                    "name": "databricks-del-public",
+                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-public'), '/delegations/databricks-del-public')]",
+                                    "properties": {
+                                        "serviceName": "Microsoft.Databricks/workspaces"
+                                    },
+                                    "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                                }
+                            ],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    },
+                    {
+                        "name": "snet-private",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-private')]",
+                        "properties": {
+                            "addressPrefix": "10.179.0.0/18",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'))]"
+                            },
+                            "delegations": [
+                                {
+                                    "name": "databricks-del-private",
+                                    "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_dbw_weu_uc_busrd_prod_01_name'), 'snet-private'), '/delegations/databricks-del-private')]",
+                                    "properties": {
+                                        "serviceName": "Microsoft.Databricks/workspaces"
+                                    },
+                                    "type": "Microsoft.Network/virtualNetworks/subnets/delegations"
+                                }
+                            ],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2022-07-01",
+            "name": "[parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name')]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub')]"
+            ],
+            "tags": {
+                "Region": "weu",
+                "Department": "BUS/PTC-CA",
+                "ProjectId": "TR-WEU-UC-0048",
+                "CostCenter": "7304070",
+                "DeploymentScript": "dbw_busrd_prod_1_9372"
+            },
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for worker nodes communication within a cluster.",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for workers communication with Databricks Webapp.",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "443",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "AzureDatabricks",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for workers communication with Azure SQL services.",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3306",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "Sql",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for workers communication with Azure Storage services.",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "443",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "Storage",
+                            "access": "Allow",
+                            "priority": 102,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for worker nodes communication within a cluster.",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 103,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub",
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups/securityRules', parameters('networkSecurityGroups_nsg_dbw_weu_uc_busrd_prod_01_name'), 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub')]",
+                        "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+                        "properties": {
+                            "description": "Required for worker communication with Azure Eventhub services.",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "9093",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "EventHub",
+                            "access": "Allow",
+                            "priority": 104,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
